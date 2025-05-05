@@ -55,7 +55,7 @@ app.post('/apply-fix', async (req, res) => {
 			messages: [
 				{
 					role: 'system',
-					content: `You are an expert programmer. Given some code and a suggestion, apply the suggestion and return only the modified code.`
+					content: `You are an expert programmer. Given some code and a suggestion, apply the suggestion and return only the modified code (as a string, properly escaped if needed, with NO markdown formatting or code fences).`
 				},
 				{
 					role: 'user',

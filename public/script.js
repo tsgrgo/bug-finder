@@ -52,7 +52,8 @@ function createSuggestionCard(suggestion) {
 
 		const data = await res.json();
 		if (data.updatedCode) {
-			editor.setValue(data.updatedCode);
+			const parsedCode = JSON.parse(JSON.stringify(data.updatedCode));
+			editor.setValue(parsedCode);
 		}
 
 		applyBtn.textContent = 'Applied ✅';
