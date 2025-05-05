@@ -4,7 +4,9 @@ const editor = CodeMirror(document.getElementById('editor'), {
 	theme: 'default'
 });
 
-function createSuggestionCard({ title, details, fix, example_fix }) {
+function createSuggestionCard(suggestion) {
+	const { title, details, fix, example_fix } = suggestion;
+
 	const card = document.createElement('div');
 	card.className = 'card';
 
@@ -20,7 +22,6 @@ function createSuggestionCard({ title, details, fix, example_fix }) {
 	code.className = 'language-javascript';
 	code.textContent = example_fix;
 
-	// Copy button
 	const copyBtn = document.createElement('button');
 	copyBtn.className = 'copy-btn';
 	copyBtn.textContent = '📋';
@@ -34,16 +35,40 @@ function createSuggestionCard({ title, details, fix, example_fix }) {
 	pre.appendChild(copyBtn);
 	pre.appendChild(code);
 
+	const applyBtn = document.createElement('button');
+	applyBtn.className = 'apply-btn';
+	applyBtn.textContent = 'Apply Suggestion';
+	applyBtn.addEventListener('click', async () => {
+		const originalCode = editor.getValue();
+
+		applyBtn.disabled = true;
+		applyBtn.textContent = 'Applying...';
+
+		const res = await fetch('/apply-fix', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ originalCode, suggestion })
+		});
+
+		const data = await res.json();
+		if (data.updatedCode) {
+			editor.setValue(data.updatedCode);
+		}
+
+		applyBtn.textContent = 'Applied ✅';
+	});
+
 	content.innerHTML = `
 	  <strong>Details:</strong><br>${details}<br><br>
 	  <strong>Fix:</strong><br>${fix}<br><br>
 	  <strong>Example Fix:</strong>
 	`;
 	content.appendChild(pre);
+	content.appendChild(applyBtn);
 
 	header.addEventListener('click', () => {
 		content.classList.toggle('show');
-		Prism.highlightElement(code); // highlight after expanding
+		Prism.highlightElement(code);
 	});
 
 	card.appendChild(header);

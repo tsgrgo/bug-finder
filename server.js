@@ -5,6 +5,7 @@ const { OpenAI } = require('openai');
 
 const app = express();
 const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const model = process.env.MODEL;
 
 app.use(express.static('public'));
 app.use(bodyParser.json());
@@ -14,7 +15,7 @@ app.post('/analyze', async (req, res) => {
 
 	try {
 		const response = await openai.chat.completions.create({
-			model: 'gpt-3.5-turbo',
+			model: model,
 			messages: [
 				{
 					role: 'system',
@@ -42,6 +43,35 @@ app.post('/analyze', async (req, res) => {
 	} catch (err) {
 		console.error('Failed to parse suggestions:', err);
 		res.status(500).json({ error: 'AI response parsing failed.' });
+	}
+});
+
+app.post('/apply-fix', async (req, res) => {
+	const { originalCode, suggestion } = req.body;
+
+	try {
+		const response = await openai.chat.completions.create({
+			model: model,
+			messages: [
+				{
+					role: 'system',
+					content: `You are an expert programmer. Given some code and a suggestion, apply the suggestion and return only the modified code.`
+				},
+				{
+					role: 'user',
+					content: `Original code:\n${originalCode}\n\nSuggestion:\n${JSON.stringify(
+						suggestion
+					)}`
+				}
+			],
+			temperature: 0.2
+		});
+
+		const updatedCode = response.choices[0].message.content.trim();
+		res.json({ updatedCode });
+	} catch (err) {
+		console.error('Error applying fix:', err);
+		res.status(500).json({ error: 'Failed to apply suggestion.' });
 	}
 });
 

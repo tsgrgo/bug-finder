@@ -84,3 +84,19 @@ pre {
 	cursor: pointer;
 	font-size: 0.9rem;
 }
+
+.apply-btn {
+	margin-top: 1rem;
+	background: #28a745;
+	color: white;
+	border: none;
+	padding: 0.5em 1em;
+	border-radius: 5px;
+	cursor: pointer;
+	font-weight: bold;
+	transition: background 0.3s;
+}
+
+.apply-btn:hover {
+	background: #218838;
+}
