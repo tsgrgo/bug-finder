@@ -18,22 +18,29 @@ app.post('/analyze', async (req, res) => {
 			messages: [
 				{
 					role: 'system',
-					content:
-						'You are an expert developer that helps find bugs and suggest improvements in user-submitted code.'
+					content: `You are an expert developer. Given a piece of code, return an array of issues in JSON format.
+		  
+		  Each issue must be an object with:
+		  - "title": A concise summary of the issue
+		  - "details": A detailed explanation of the problem
+		  - "fix": A suggestion for how to fix or improve it
+		  
+		  Respond ONLY with the JSON array.`
 				},
 				{
 					role: 'user',
-					content: `Analyze this code for bugs and suggest improvements:\n\n${code}`
+					content: `Analyze this code and return suggestions:\n\n${code}`
 				}
 			],
 			temperature: 0.2
 		});
 
-		const suggestions = response.choices[0].message.content;
+		const suggestionsRaw = response.choices[0].message.content.trim();
+		const suggestions = JSON.parse(suggestionsRaw);
 		res.json({ suggestions });
-	} catch (error) {
-		console.error('Error:', error);
-		res.status(500).json({ error: 'Something went wrong' });
+	} catch (err) {
+		console.error('Failed to parse suggestions:', err);
+		res.status(500).json({ error: 'AI response parsing failed.' });
 	}
 });
 

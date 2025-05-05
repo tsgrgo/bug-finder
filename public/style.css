@@ -17,6 +17,11 @@ body {
 	border-right: 2px solid #ddd;
 }
 
+.CodeMirror {
+	border: 1px solid #eee;
+	height: auto;
+}
+
 .suggestions {
 	flex: 1;
 	padding: 1rem;
@@ -31,4 +36,31 @@ button {
 	color: white;
 	border: none;
 	cursor: pointer;
+}
+
+.card {
+	background: white;
+	border: 1px solid #ddd;
+	border-radius: 10px;
+	margin-bottom: 1rem;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+	overflow: hidden;
+	transition: 0.3s;
+}
+
+.card-header {
+	padding: 1rem;
+	background: #f0f0f0;
+	cursor: pointer;
+	font-weight: bold;
+}
+
+.card-content {
+	padding: 1rem;
+	display: none;
+	background: #fff;
+}
+
+.card-content.show {
+	display: block;
 }
