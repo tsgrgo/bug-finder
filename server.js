@@ -19,15 +19,15 @@ app.post('/analyze', async (req, res) => {
 			messages: [
 				{
 					role: 'system',
-					content: `You are an expert developer. Given a piece of code, return an array of issues in JSON format.
-		  
-		  Each issue must be an object with:
-		  - "title": A concise summary of the issue
-		  - "details": A detailed explanation of the problem
-		  - "fix": A suggestion for how to fix or improve it
-		  - "example_fix": A short code snippet showing the suggested fix (as a string, properly escaped if needed)
-		  
-		  Respond ONLY with the JSON array.`
+					content: `You are an expert developer. Given a piece of code, return an array of issues (minimum of 3 issues) in JSON format.
+
+Each issue must be an object with:
+- "title": A concise summary of the issue
+- "details": A detailed explanation of the problem
+- "fix": A suggestion for how to fix or improve it
+- "example_fix": A short code snippet showing the suggested fix (as a string, properly escaped if needed)
+
+Respond ONLY with the JSON array as a plain string, without markdown formatting or code fences.`
 				},
 				{
 					role: 'user',
@@ -55,7 +55,12 @@ app.post('/apply-fix', async (req, res) => {
 			messages: [
 				{
 					role: 'system',
-					content: `You are an expert programmer. Given some code and a suggestion, apply the suggestion and return only the modified code (as a string, properly escaped if needed, with NO markdown formatting or code fences).`
+					content: `You are an expert programmer. Given a current version of a code file and a suggestion for improvement, your task is to modify the code only as necessary to apply the suggestion.
+- Do not remove or undo previous improvements
+- Do not reformat or rewrite unrelated parts of the code
+- Only change the lines that are required to implement the suggestion
+
+Return the updated code as a plain string, without markdown formatting or code fences. If no changes are needed, return the original code exactly.`
 				},
 				{
 					role: 'user',
