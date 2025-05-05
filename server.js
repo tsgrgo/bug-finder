@@ -24,6 +24,7 @@ app.post('/analyze', async (req, res) => {
 		  - "title": A concise summary of the issue
 		  - "details": A detailed explanation of the problem
 		  - "fix": A suggestion for how to fix or improve it
+		  - "example_fix": A short code snippet showing the suggested fix (as a string, properly escaped if needed)
 		  
 		  Respond ONLY with the JSON array.`
 				},

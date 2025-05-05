@@ -64,3 +64,10 @@ button {
 .card-content.show {
 	display: block;
 }
+
+pre {
+	background: #f5f5f5;
+	padding: 1em;
+	border-radius: 5px;
+	overflow-x: auto;
+}

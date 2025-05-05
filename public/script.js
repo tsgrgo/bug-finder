@@ -4,7 +4,7 @@ const editor = CodeMirror(document.getElementById('editor'), {
 	theme: 'default'
 });
 
-function createSuggestionCard({ title, details, fix }) {
+function createSuggestionCard({ title, details, fix, example_fix }) {
 	const card = document.createElement('div');
 	card.className = 'card';
 
@@ -16,7 +16,9 @@ function createSuggestionCard({ title, details, fix }) {
 	content.className = 'card-content';
 	content.innerHTML = `
 	  <strong>Details:</strong><br>${details}<br><br>
-	  <strong>Possible Fix:</strong><br>${fix}
+	  <strong>Fix:</strong><br>${fix}<br><br>
+	  <strong>Example Fix:</strong>
+	  <pre><code class="language-js">${example_fix}</code></pre>
 	`;
 
 	header.addEventListener('click', () => {

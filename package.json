@@ -1,18 +1,19 @@
 {
-  "name": "bugfinder",
-  "version": "1.0.0",
-  "main": "server.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
-  },
-  "author": "",
-  "license": "ISC",
-  "description": "",
-  "dependencies": {
-    "body-parser": "^2.2.0",
-    "dotenv": "^16.5.0",
-    "express": "^5.1.0",
-    "openai": "^4.97.0"
-  }
+	"name": "bugfinder",
+	"version": "1.0.0",
+	"main": "server.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"start": "nodemon server.js"
+	},
+	"author": "",
+	"license": "ISC",
+	"description": "",
+	"dependencies": {
+		"body-parser": "^2.2.0",
+		"dotenv": "^16.5.0",
+		"express": "^5.1.0",
+		"nodemon": "^3.1.10",
+		"openai": "^4.97.0"
+	}
 }
