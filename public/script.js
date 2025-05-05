@@ -14,15 +14,36 @@ function createSuggestionCard({ title, details, fix, example_fix }) {
 
 	const content = document.createElement('div');
 	content.className = 'card-content';
+
+	const pre = document.createElement('pre');
+	const code = document.createElement('code');
+	code.className = 'language-javascript';
+	code.textContent = example_fix;
+
+	// Copy button
+	const copyBtn = document.createElement('button');
+	copyBtn.className = 'copy-btn';
+	copyBtn.textContent = '📋';
+	copyBtn.title = 'Copy to clipboard';
+	copyBtn.addEventListener('click', () => {
+		navigator.clipboard.writeText(example_fix);
+		copyBtn.textContent = '✅';
+		setTimeout(() => (copyBtn.textContent = '📋'), 1500);
+	});
+
+	pre.appendChild(copyBtn);
+	pre.appendChild(code);
+
 	content.innerHTML = `
 	  <strong>Details:</strong><br>${details}<br><br>
 	  <strong>Fix:</strong><br>${fix}<br><br>
 	  <strong>Example Fix:</strong>
-	  <pre><code class="language-js">${example_fix}</code></pre>
 	`;
+	content.appendChild(pre);
 
 	header.addEventListener('click', () => {
 		content.classList.toggle('show');
+		Prism.highlightElement(code); // highlight after expanding
 	});
 
 	card.appendChild(header);
