@@ -58,16 +58,14 @@ app.post('/apply-fix', async (req, res) => {
 			messages: [
 				{
 					role: 'system',
-					content: `You are an expert programmer. Given a current version of a code file and a suggestion for improvement, your task is to modify the code only as necessary to apply the suggestion.
-- Do not remove or undo previous improvements
+					content: `You are an expert programmer. Implement the suggested changes in the code.
 - Do not reformat or rewrite unrelated parts of the code
 - Only change the lines that are required to implement the suggestion
-
-Return the updated code as a plain string, without markdown formatting or code fences. If no changes are needed, return the original code exactly.`
+- Respond with the the whole code and not just the changed part. as a plain string, without markdown formatting or code fences`
 				},
 				{
 					role: 'user',
-					content: `Original code:\n${originalCode}\n\nSuggestion:\n${JSON.stringify(
+					content: `Code:\n${originalCode}\n\nSuggestion:\n${JSON.stringify(
 						suggestion
 					)}`
 				}
