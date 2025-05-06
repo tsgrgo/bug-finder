@@ -19,25 +19,28 @@ app.post('/analyze', async (req, res) => {
 			messages: [
 				{
 					role: 'system',
-					content: `You are an expert developer. Given a piece of code, return an array of issues (minimum of 3 issues) in JSON format.
+					content: `You are an expert developer following clean code and best practices. Given a piece of code, return an array of suggestions (3 or more) in JSON format. Make sure to only suggest changes that are definitely not already implemented in the code.
 
-Each issue must be an object with:
+Each suggestion must be an object with:
 - "title": A concise summary of the issue
 - "details": A detailed explanation of the problem
-- "fix": A suggestion for how to fix or improve it
-- "example_fix": A short code snippet showing the suggested fix (as a string, properly escaped if needed)
+- "fix": A suggestion for how to fix or improve the code
+- "example_fix": A short CODE snippet showing the suggested fix (only code with optional comments as a string, properly escaped if needed)
 
-Respond ONLY with the JSON array as a plain string, without markdown formatting or code fences.`
+Respond ONLY with the JSON array, without markdown formatting or code fences.`
 				},
 				{
 					role: 'user',
 					content: `Analyze this code and return suggestions:\n\n${code}`
 				}
 			],
-			temperature: 0.2
+			temperature: 0.8
 		});
 
 		const suggestionsRaw = response.choices[0].message.content.trim();
+
+		console.log(suggestionsRaw);
+
 		const suggestions = JSON.parse(suggestionsRaw);
 		res.json({ suggestions });
 	} catch (err) {
