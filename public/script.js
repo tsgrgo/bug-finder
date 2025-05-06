@@ -1,7 +1,7 @@
 const editor = CodeMirror(document.getElementById('editor'), {
 	lineNumbers: true,
 	mode: 'javascript',
-	theme: 'default'
+	theme: 'darcula'
 });
 
 function createSuggestionCard(suggestion) {
@@ -69,7 +69,7 @@ function createSuggestionCard(suggestion) {
 
 	header.addEventListener('click', () => {
 		content.classList.toggle('show');
-		Prism.highlightElement(code);
+		hljs.highlightElement(code);
 	});
 
 	card.appendChild(header);
@@ -77,21 +77,23 @@ function createSuggestionCard(suggestion) {
 	return card;
 }
 
-document.getElementById('analyzeBtn').addEventListener('click', async () => {
-	const code = editor.getValue();
-	const suggestionsContainer = document.getElementById('suggestions');
-	suggestionsContainer.innerHTML = 'Analyzing...';
+document
+	.getElementById('analyze-button')
+	.addEventListener('click', async () => {
+		const code = editor.getValue();
+		const suggestionsContainer = document.getElementById('suggestions');
+		suggestionsContainer.innerHTML = 'Analyzing...';
 
-	const response = await fetch('/analyze', {
-		method: 'POST',
-		headers: { 'Content-Type': 'application/json' },
-		body: JSON.stringify({ code })
+		const response = await fetch('/analyze', {
+			method: 'POST',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ code })
+		});
+
+		const { suggestions } = await response.json();
+
+		suggestionsContainer.innerHTML = '';
+		suggestions.forEach(suggestion => {
+			suggestionsContainer.appendChild(createSuggestionCard(suggestion));
+		});
 	});
-
-	const { suggestions } = await response.json();
-
-	suggestionsContainer.innerHTML = '';
-	suggestions.forEach(suggestion => {
-		suggestionsContainer.appendChild(createSuggestionCard(suggestion));
-	});
-});
